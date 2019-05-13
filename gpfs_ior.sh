@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -P #ACCOUNT
-#BSUB -J IOR
+#BSUB -J GPFS_IOR
 #BSUB -o gpfs_ior.o%J
 #BSUB -e gpfs_ior.e%J
 #BSUB -W 10

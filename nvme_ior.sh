@@ -1,6 +1,6 @@
 #!/bin/bash 
 #BSUB -P #ACCOUNT
-#BSUB -J name_test
+#BSUB -J NVME_IOR
 #BSUB -o nvme_ior.o%J
 #BSUB -e nvme_ior.e%J
 #BSUB -W 20
