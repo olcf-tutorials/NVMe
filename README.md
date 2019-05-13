@@ -46,7 +46,7 @@ submit the job script:
 bsub gpfs_ior.sh
 ```
 
-## Results
+## Results from GPFS
 
 You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
 
@@ -88,7 +88,7 @@ submit the job script:
 bsub nvme_ior.sh
 ```
 
-## Results
+## Results from NVMe
 
 You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
 
