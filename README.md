@@ -106,7 +106,7 @@ Max Write: 4124.85 MiB/sec (4325.22 MB/sec)
 ```
 In this case the NVMe performance for two nodes is 4325 MB/s, 6.5 times slower than the GPFS. One question that raises, is why NVMe performance is worse than GPFS?
 
-## Explanation
+## Results - Explanation
 
 <img align="middle" src="https://github.com/olcf-tutorials/NVMe/blob/master/figures/summit_architecture.png?raw=true" width="55%">
 
@@ -124,3 +124,60 @@ Now, the NVMe performance is 1.7 times faster than GPFS.
 
 Of course, the results depend on the utilization of the system that moment and what the I/O workload and pattern is.
 
+## Using Spectral
+
+Spectral is a portable and transparent middleware library to enable use of the node-local burst buffers for accelerated application output on Summit. It is used to transfer files from node-local NVMe back to the parallel GPFS file system without the need of the user to interact during the job execution. Spectral runs on the isolated core of each reserved node, so it does not occupy resources and based on some parameters the user could define which folder to be copied to the GPFS. In order to use Spectral, the user has to do the following steps in the submission script:
+
+* Request Spectral resources instead of NVMe
+* Load spectrum module
+* Declare the path where the files will be saved in the node-local NVMe (PERSIST_DIR)
+* Declare the path on GPFS where the files will be copied (PFS_DIR)
+* Execute the script spectral_wait.py when the application is finished in order to copy the files from NVMe to GPFS
+* No need to copy the files manually, it is dome automatically.
+
+```
+#!/bin/bash
+#BSUB -P #Account
+#BSUB -J NVME_SPECTRAL_IOR
+#BSUB -o nvme_spectral_ior.o%J
+#BSUB -e nvme_spectral_ior.e%J
+#BSUB -W 20
+#BSUB -nnodes 2
+#BSUB -alloc_flags spectral
+
+module load spectral
+export PERSIST_DIR=/mnt/bb/$USER
+timest=$(date +%s)
+mkdir nvme_output_$timest
+export PFS_DIR=$PWD/nvme_output_$timest
+
+
+jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o /mnt/bb/$USER/ior_file_easy
+jsrun -n 2 -r 1 ls -l /mnt/bb/$USER/
+spectral_wait.py
+```
+
+Submit the script
+
+```
+bsub spectral_ior.sh
+```
+
+In this case the output folder is named nvme_output_XXXX where XXXX is timestamp. Inside in thsi fodler a file called spectral.log is created where it demonstrates if a file is copied yet, for example:
+
+```
+Spectral Work ENQUEUE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/install/nvme_output_1557776904/ior_file_easy.00000026
+pectral Work DEQUEUE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/install/nvme_output_1557776904/ior_file_easy.00000004
+Spectral Work DONE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/install/nvme_output_1557776904/ior_file_easy.00000004
+```
+
+Enqueue means that the file will be copied, Dequeue that the file is under trasnfer, and Done that the trasnfer finished.
+
+In the output file you can information such as:
+
+```
+...
+Enqueued:32 Dequeued:32 Done:31
+Enqueued:32 Dequeued:32 Done:31
+All files moved
+```
