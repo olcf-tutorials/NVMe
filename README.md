@@ -121,7 +121,7 @@ Started at Mon May 13 16:56:30 2019
 Terminated at Mon May 13 16:59:58 2019
 ```
 
-So, it took 223 seconds to finish. One question that raises, is why NVMe performance is worse than GPFS?
+So, it took 223 seconds to finish. One question that arises, is why NVMe performance is worse than GPFS?
 
 ## Results - Explanation
 
