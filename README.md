@@ -1,5 +1,8 @@
 # NVMe
-Examples on using NVMe devices including example of Spectral library
+
+Each compute node on Summit has a Non-Volatile Memory (NVMe) storage device, colloquially known as a "Burst Buffer" with theoretical performance peak of 2.1 GB/s for writing and 6.0 GB/s for reading. Users will have access to an 1600 GB partition of each NVMe. The NVMes could be used to reduce the time that applications wait for I/O. Using an SSD drive per compute node, the burst buffer will be used to transfers data to or from the drive before the application reads a file or after it writes a file. The result will be that the application benefits from native SSD performance for a portion of its I/O requests. 
+
+More information: https://www.olcf.ornl.gov/for-users/system-user-guides/summit/summit-user-guide/#burst-buffer
 
 In this tutorial we will use IOR benchmark to execute on GPFS and NVMe devices, while we will showcase the Spectral library
 
