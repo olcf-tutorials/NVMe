@@ -70,7 +70,7 @@ Edit the file and declare your account
 Here there are some changes:
 * You need to declare the alloc_flags NVME
 * If you want to copy either into/from NVME, you need to use the jsrun command, it is not available from the login node otherwise.
-* We copy the data from NVMe, one process per compute node, so, per NVMe device and we save them in a fodler with timestamp to avoid overwriting
+* We copy the data from NVMe, one process per compute node, so, per NVMe device and we save them in a fold  er with timestamp to avoid overwriting
 * The copy from NVme, takes time, that's why the time limit for the NVMe job could be longer than the GPFS job in some cases. 
 * Delete your data to avoid fill in your space.
 
@@ -163,7 +163,7 @@ Submit the script
 bsub spectral_ior.sh
 ```
 
-In this case the output folder is named nvme_output_XXXX where XXXX is timestamp. Inside in thsi fodler a file called spectral.log is created where it demonstrates if a file is copied yet, for example:
+In this case the output folder is named nvme_output_XXXX where XXXX is timestamp. Inside in this folder a file called spectral.log is created where it demonstrates if a file is copied yet, for example:
 
 ```
 Spectral Work ENQUEUE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/install/nvme_output_1557776904/ior_file_easy.00000026
@@ -171,7 +171,7 @@ Spectral Work DEQUEUE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/in
 Spectral Work DONE File : /gpfs/alpine/stf007/scratch/gmarkoma/bb_training/install/nvme_output_1557776904/ior_file_easy.00000004
 ```
 
-Enqueue means that the file will be copied, Dequeue that the file is under trasnfer, and Done that the trasnfer finished.
+Enqueue means that the file will be copied, Dequeue that the file is under transfer, and Done that the transfer finished.
 
 In the output file you can information such as:
 
@@ -184,6 +184,6 @@ All files moved
 
 The file are transferred without a manual copy from the user.
 
-More information abotu Spectral library: https://www.olcf.ornl.gov/spectral-library/
+More information about Spectral library: https://www.olcf.ornl.gov/spectral-library/
 
 For the cases that I/O occurs during the execution of an application, with Spectral the transfer happens concurrent with the computation, so the total time to solution is faster.
