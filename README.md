@@ -113,10 +113,11 @@ In this case the NVMe performance for two nodes is 4325 MB/s, 6.5 times slower t
 From the Summit architecture figure above, we have two observations. Initially, the maximum bandwidth per node is 12-14 GB/s while the performance of the NVMe is 6 GB/s and 2.1 GB/s for read and write respectively. This means that GPFS performance can be faster for many cases. The maximum bandwidth for GPFS is 2.5TB/s and while we scale, the performance per node drops to adjust to the total limitations. Thus, up to around 1000-1100 compute nodes, could perform better on GPFS than NVMe in some cases.
 
 We did repeat the experiments on 1100 compute nodes and we got the following results:
-For GPFS:
+### GPFS
+
 Max Write: 1289635.96 MiB/sec (1352281.32 MB/sec)
 
-For NVMe:
+### NVMe
 Max Write: 2210063.58 MiB/sec (2317419.63 MB/sec)
 
 Now, the NVMe performance is 1.7 times faster than GPFS.
