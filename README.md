@@ -41,6 +41,11 @@ Edit the file and declare your account
 jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o ./output/ior_file_easy
 ```
 
+submit the job script:
+```
+bsub gpfs_ior.sh
+```
+
 ## Results
 
 You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
@@ -76,6 +81,11 @@ timest=$(date +%s)
 mkdir nvme_output_$timest
 jsrun -n 2 -r 1 ls -l /mnt/bb/$USER/
 jsrun -n 2 -r 1 cp -r /mnt/bb/$USER/ ./nvme_output_$timest/
+```
+
+submit the job script:
+```
+bsub nvme_ior.sh
 ```
 
 ## Results
