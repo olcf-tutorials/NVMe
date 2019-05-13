@@ -55,6 +55,11 @@ In this result from Summit, we could achieve 26401 MB/s from two compute nodes
 ## Reserving 2 nodes and executing IOR on NVMe (nvme_ior.sh)
 
 Edit the file and declare your account
+Here there are some changes:
+* You need to declare the alloc_flags NVME
+* If you want to copy either into/from NVME, you need to use the jsrun command, it is not available from the login node otherwise.
+* We copy the data from NVMe, one process per compute node, so, per NVMe device and we save them in a fodler with timestamp to avoid overwriting
+* Delete your data to avoid fill in your space.
 
 ```
 #!/bin/bash 
