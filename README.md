@@ -104,10 +104,22 @@ You can open the output/error files if you want or just execute the following on
 grep Max nvme_ior.oXXXXX | head -n 1
 Max Write: 4124.85 MiB/sec (4325.22 MB/sec)
 ```
-In this case the NVMe performance fro two node sis 4325 MB/s. One question that raises, is why NVMe performance is worse than GPFS?
+In this case the NVMe performance for two nodes is 4325 MB/s, 6.5 times slower than the GPFS. One question that raises, is why NVMe performance is worse than GPFS?
 
 ## Explanation
 
 <img align="middle" src="https://github.com/olcf-tutorials/NVMe/blob/master/figures/summit_architecture.png?raw=true" width="55%">
 
 From the Summit architecture figure above, we have two observations. Initially, the maximum bandwidth per node is 12-14 GB/s while the performance of the NVMe is 6 GB/s and 2.1 GB/s for read and write respectively. This means that GPFS performance can be faster for many cases. The maximum bandwidth for GPFS is 2.5TB/s and while we scale, the performance per node drops to adjust to the total limitations. Thus, up to around 1000-1100 compute nodes, could perform better on GPFS than NVMe in some cases.
+
+We did repeat the experiments on 1100 compute nodes and we got the following results:
+For GPFS:
+Max Write: 1289635.96 MiB/sec (1352281.32 MB/sec)
+
+For NVMe:
+Max Write: 2210063.58 MiB/sec (2317419.63 MB/sec)
+
+Now, the NVMe performance is 1.7 times faster than GPFS.
+
+Of course, the results depend on the utilization of the system that moment and what the I/O workload and pattern is.
+
