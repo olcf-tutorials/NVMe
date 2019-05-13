@@ -17,7 +17,7 @@ cd ior
 make install
 ```
 
-## Go to the IOR isntallation path
+## Go to the IOR installation path
 Select below the prefix fromt he configure command above
 
 
@@ -32,7 +32,7 @@ Edit the file and declare your account
 ```
 #!/bin/bash
 #BSUB -P #ACCOUNT
-#BSUB -J IOR
+#BSUB -J GPFS_IOR
 #BSUB -o gpfs_ior.o%J
 #BSUB -e gpfs_ior.e%J
 #BSUB -W 10
@@ -48,7 +48,7 @@ Edit the file and declare your account
 ```
 #!/bin/bash 
 #BSUB -P #ACCOUNT
-#BSUB -J name_test
+#BSUB -J NVME_IOR
 #BSUB -o nvme_ior.o%J
 #BSUB -e nvme_ior.e%J
 #BSUB -W 20
