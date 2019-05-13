@@ -107,3 +107,5 @@ Max Write: 4124.85 MiB/sec (4325.22 MB/sec)
 In this case the NVMe performance fro two node sis 4325 MB/s. One question that raises, is why NVMe performance is worse than GPFS?
 
 ## Explanation
+
+<img align="middle" src="https://github.com/olcf-tutorials/NVMe/blob/master/figures/summit_architecture.png?raw=true" width="55%">
