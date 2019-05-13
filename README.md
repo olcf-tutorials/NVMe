@@ -41,6 +41,17 @@ Edit the file and declare your account
 jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o ./output/ior_file_easy
 ```
 
+## Results
+
+You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
+
+```
+$ grep Max gpfs_ior.oXXXXX | head -n 1
+Max Write: 25178.81 MiB/sec (26401.90 MB/sec)
+```
+
+In this result from Summit, we could achieve 26401 MB/s from two compute nodes 
+
 ## Reserving 2 nodes and executing IOR on NVMe (nvme_ior.sh)
 
 Edit the file and declare your account
@@ -61,3 +72,15 @@ mkdir nvme_output_$timest
 jsrun -n 2 -r 1 ls -l /mnt/bb/$USER/
 jsrun -n 2 -r 1 cp -r /mnt/bb/$USER/ ./nvme_output_$timest/
 ```
+
+## Results
+
+You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
+
+```
+grep Max nvme_ior.oXXXXX | head -n 1
+Max Write: 4124.85 MiB/sec (4325.22 MB/sec)
+```
+In this case the NVMe performance fro two node sis 4325 MB/s. One question that raises, is why NVMe performance is worse than GPFS?
+
+## Explanation
