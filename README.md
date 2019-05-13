@@ -18,7 +18,7 @@ make install
 ```
 
 ## Go to the IOR installation path
-Select below the prefix fromt he configure command above
+Select below the prefix from the configure command above
 
 
 ```
@@ -64,6 +64,7 @@ Here there are some changes:
 * You need to declare the alloc_flags NVME
 * If you want to copy either into/from NVME, you need to use the jsrun command, it is not available from the login node otherwise.
 * We copy the data from NVMe, one process per compute node, so, per NVMe device and we save them in a fodler with timestamp to avoid overwriting
+* The copy from NVme, takes time, that's why the time limit for the NVMe job could be longer than the GPFS job in some cases. 
 * Delete your data to avoid fill in your space.
 
 ```
