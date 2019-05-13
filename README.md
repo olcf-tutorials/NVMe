@@ -181,3 +181,9 @@ Enqueued:32 Dequeued:32 Done:31
 Enqueued:32 Dequeued:32 Done:31
 All files moved
 ```
+
+The file are transferred without a manual copy from the user.
+
+More information abotu Spectral library: https://www.olcf.ornl.gov/spectral-library/
+
+For the cases that I/O occurs during the execution of an application, with Spectral the transfer happens concurrent with the computation, so the total time to solution is faster.
