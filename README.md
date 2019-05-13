@@ -6,7 +6,18 @@ In this tutorial we will use IOR benchmark to execute on GPFS and NVMe devices, 
 We will follow three examples, one executing IOR on GPFS, then on NVMe and the differences while using Spectral library
 
 
-Reserving 2 nodes and executing IOR on GPFS
+## Compiling iOR
+
+```
+module load gcc
+git clone https://github.com/hpc/ior.git
+cd ior
+./bootstrap
+./configure --prefix=/declare_path/
+make install
+```
+
+## Reserving 2 nodes and executing IOR on GPFS
 
 ```
 #!/bin/bash
