@@ -10,10 +10,10 @@ More information: https://www.olcf.ornl.gov/for-users/system-user-guides/summit/
 
 In this tutorial we will use IOR benchmark to execute on GPFS and NVMe devices, while we will showcase the Spectral library
 
-We will follow three examples, one executing IOR on GPFS, then on NVMe and the differences while using Spectral library
+We will follow three examples, one executing IOR on GPFS, then on NVMe and the differences while using Spectral library. In all the cases we do write one file per MPI process.
 
 
-## Compiling iOR
+## Compiling IOR
 
 ```
 module load gcc
