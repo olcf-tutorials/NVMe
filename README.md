@@ -182,7 +182,7 @@ Enqueued:32 Dequeued:32 Done:31
 All files moved
 ```
 
-The file are transferred without a manual copy from the user.
+The file are transferred without a manual copy from the user. You can check the results as before.
 
 More information about Spectral library: https://www.olcf.ornl.gov/spectral-library/
 
