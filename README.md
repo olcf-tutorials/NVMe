@@ -210,3 +210,61 @@ For the application that there are a lot of timesteps with I/O, the Spectral lib
 
 
 ## Metadata
+
+A simple explanation of what is metadata, when we access a file, for example open/close, we send metadata request. It depends on how many requests occur, this couldbe stressful for the system. We have a test code called metadata.f90 which on purpose is quite not efficient on metadata. Just to remind on machine learning workloads, there are a lot of metadata while reading data to train the models.
+
+### Compile the metadata.f90
+```
+cd metadata
+module load gcc
+mpif90 -o metadata metadata.f90
+```
+
+This application, for each MPI processes open a file, writes a value and close the file for 1 million times. This stress the metadata.
+
+Execute the application on GPFS, edit the account on the gpfs_metadata.sh submission script:
+
+```
+#!/bin/bash
+#BSUB -P #Account
+#BSUB -J GPFS_Metadata
+#BSUB -o gpfs_metadata.o%J
+#BSUB -e gpfs_metadata.e%J
+#BSUB -W 2
+#BSUB -nnodes 1
+
+jsrun -n 2 -r 2 -a 1 -c 1 ./metadata
+```
+
+We create only two processes and in the output file (gpfs_metadata.oXXX), you will have something like this:
+```
+Duration: 38.1130
+```
+This is 38.11 seconds to be executed on GPFS, 2 MPI processes on a single node.
+
+However, if we execute the NVMe version:
+
+```
+#!/bin/bash
+#BSUB -P #Account
+#BSUB -J NVME_Metadata
+#BSUB -o nvme_medatata.o%J
+#BSUB -e nvme_medatata.e%J
+#BSUB -W 2
+#BSUB -nnodes 1
+#BSUB -alloc_flags NVME
+
+export BBPATH=/mnt/bb/$USER
+
+jsrun -n 1 cp metadata ${BBPATH}
+jsrun -n 2 -r 2 -a 1 -c 1 --chdir ${BBPATH} ./metadata
+```
+
+Just to note that in this submission script we copy the executable on the NVMe path ($BBPATH) and we declare the working directory as the BBPATH with the command --chdir ${BBPATH}.
+
+Then, you will have something like that:
+```
+Duration: 23.0020
+```
+
+Then, NVMe, is 1.65 times faster than GPFS for a single node. This is an itneresting example to illustrate that NVMe can benefit you even in small scale, depending on your application.
