@@ -2,6 +2,7 @@
 #BSUB -P #Account
 #BSUB -J NVME_Metadata
 #BSUB -o nvme_medatata.o%J
+#BSUB -e nvme_medatata.e%J
 #BSUB -W 2
 #BSUB -nnodes 1
 #BSUB -alloc_flags NVME

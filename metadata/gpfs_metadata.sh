@@ -2,6 +2,7 @@
 #BSUB -P #Account
 #BSUB -J GPFS_Metadata
 #BSUB -o gpfs_metadata.o%J
+#BSUB -e gpfs_metadata.e%J
 #BSUB -W 2
 #BSUB -nnodes 1
 
