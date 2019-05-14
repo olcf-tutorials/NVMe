@@ -133,7 +133,8 @@ We did repeat the experiments on 1100 compute nodes and we got the following res
 
 ### GPFS
 
-Max Write: 1289635.96 MiB/sec (1352281.32 MB/sec)
+Max Write: 1076349.75 MiB/sec (1128634.52 MB/sec)
+Max Read:  1335291.40 MiB/sec (1400154.51 MB/sec)
 
 ### NVMe
 Max Write: 2210063.58 MiB/sec (2317419.63 MB/sec)
