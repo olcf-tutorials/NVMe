@@ -137,9 +137,10 @@ Max Write: 1076349.75 MiB/sec (1128634.52 MB/sec)
 Max Read:  1335291.40 MiB/sec (1400154.51 MB/sec)
 
 ### NVMe
-Max Write: 2210063.58 MiB/sec (2317419.63 MB/sec)
+Max Write: 2228057.73 MiB/sec (2336287.86 MB/sec)
+Max Read:  6104023.86 MiB/sec (6400532.93 MB/sec)
 
-Now, the NVMe performance is 1.7 times faster than GPFS.
+Now, the NVMe performance is 2 and 4.57 times faster than GPFS in write and read respectively.
 
 Of course, the results depend on the utilization of the system that moment and what the I/O workload and pattern is.
 
