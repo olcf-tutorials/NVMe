@@ -10,7 +10,7 @@ More information: https://www.olcf.ornl.gov/for-users/system-user-guides/summit/
 
 In this tutorial we will use IOR benchmark to execute on GPFS and NVMe devices, while we will showcase the Spectral library
 
-We will follow three examples, one executing IOR on GPFS, then on NVMe and the differences while using Spectral library. In all the cases we do write one file per MPI process. The IOR flags are outside the scope of this tutorial to be explained.
+We will follow three examples, one executing IOR on GPFS, then on NVMe and the differences while using Spectral library. In all the cases we do write/read one file per MPI process. The IOR flags are outside the scope of this tutorial to be explained.
 
 
 ## Compiling IOR
@@ -45,7 +45,7 @@ Edit the file and declare your account
 #BSUB -W 10
 #BSUB -nnodes 2
 
-jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o ./output/ior_file_easy
+jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -g -G 27 -k -e  -o ./output/ior_file_easy
 ```
 
 submit the job script:
@@ -58,11 +58,18 @@ bsub gpfs_ior.sh
 You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
 
 ```
-$ grep Max gpfs_ior.oXXXXX | head -n 1
-Max Write: 25178.81 MiB/sec (26401.90 MB/sec)
+$ grep Max gpfs_ior.oXXXXX | head -n 2
+Max Write: 24640.02 MiB/sec (25836.93 MB/sec)
+Max Read:  26941.26 MiB/sec (28249.96 MB/sec)
 ```
 
-In this result from Summit, we could achieve 26401 MB/s from two compute nodes 
+In this result from Summit, we could achieve 25836 MB/s and 28249 MB/s from two compute nodes, and because it runs for short time we could use some caching that achieves higher results. We can see from the output file:
+
+```
+Started at Mon May 13 16:48:49 2019
+Terminated at Mon May 13 16:49:41 2019
+```
+So, it took 52 seconds
 
 ## Reserving 2 nodes and executing IOR on NVMe (nvme_ior.sh)
 
@@ -84,7 +91,7 @@ Here there are some changes:
 #BSUB -nnodes 2
 #BSUB -alloc_flags NVME
 
-jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o /mnt/bb/$USER/ior_file_easy
+jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -g -G 27 -k -e  -o /mnt/bb/$USER/ior_file_easy
 timest=$(date +%s)
 mkdir nvme_output_$timest
 jsrun -n 2 -r 1 ls -l /mnt/bb/$USER/
@@ -101,10 +108,20 @@ bsub nvme_ior.sh
 You can open the output/error files if you want or just execute the following on the output file, where XXXXX is your job ID:
 
 ```
-grep Max nvme_ior.oXXXXX | head -n 1
-Max Write: 4124.85 MiB/sec (4325.22 MB/sec)
+grep Max nvme_ior.oXXXXX | head -n 2
+Max Write: 4173.36 MiB/sec (4376.08 MB/sec)
+Max Read:  11161.54 MiB/sec (11703.73 MB/sec)
 ```
-In this case the NVMe performance for two nodes is 4325 MB/s, 6.5 times slower than the GPFS. One question that raises, is why NVMe performance is worse than GPFS?
+In this case the NVMe performance for two nodes is 4376 MB/s and 11703 MB/s for write/read, which is 5.9 and 2.4 times  slower than the GPFS. 
+
+From the output file, we can see the following:
+
+```
+Started at Mon May 13 16:56:30 2019
+Terminated at Mon May 13 16:59:58 2019
+```
+
+So, it took 223 seconds to finish. One question that arises, is why NVMe performance is worse than GPFS?
 
 ## Results - Explanation
 
@@ -113,14 +130,17 @@ In this case the NVMe performance for two nodes is 4325 MB/s, 6.5 times slower t
 From the Summit architecture figure above, we have two observations. Initially, the maximum bandwidth per node is 12-14 GB/s while the performance of the NVMe is 6 GB/s and 2.1 GB/s for read and write respectively. This means that GPFS performance can be faster for many cases. The maximum bandwidth for GPFS is 2.5TB/s and while we scale, the performance per node drops to adjust to the total limitations. Thus, up to around 1000-1100 compute nodes, could perform better on GPFS than NVMe in some cases.
 
 We did repeat the experiments on 1100 compute nodes and we got the following results:
+
 ### GPFS
 
-Max Write: 1289635.96 MiB/sec (1352281.32 MB/sec)
+Max Write: 1076349.75 MiB/sec (1128634.52 MB/sec)
+Max Read:  1335291.40 MiB/sec (1400154.51 MB/sec)
 
 ### NVMe
-Max Write: 2210063.58 MiB/sec (2317419.63 MB/sec)
+Max Write: 2228057.73 MiB/sec (2336287.86 MB/sec)
+Max Read:  6104023.86 MiB/sec (6400532.93 MB/sec)
 
-Now, the NVMe performance is 1.7 times faster than GPFS.
+Now, the NVMe performance is 2 and 4.57 times faster than GPFS in write and read respectively.
 
 Of course, the results depend on the utilization of the system that moment and what the I/O workload and pattern is.
 
@@ -152,7 +172,7 @@ mkdir nvme_output_$timest
 export PFS_DIR=$PWD/nvme_output_$timest
 
 
-jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -w -C -Q 1 -g -G 27 -k -e  -o /mnt/bb/$USER/ior_file_easy
+jsrun -n 2 -r 1 -a 16 -c 16 ./bin/ior -t 16m -b 19200m -F -g -G 27 -k -e  -o /mnt/bb/$USER/ior_file_easy
 jsrun -n 2 -r 1 ls -l /mnt/bb/$USER/
 spectral_wait.py
 ```
