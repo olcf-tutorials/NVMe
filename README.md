@@ -206,4 +206,7 @@ The file are transferred without a manual copy from the user. You can check the 
 
 More information about Spectral library: https://www.olcf.ornl.gov/spectral-library/
 
-For the cases that I/O occurs during the execution of an application, with Spectral the transfer happens concurrent with the computation, so the total time to solution is faster.
+For the application that there are a lot of timesteps with I/O, the Spectral library transfers the data to GPFS on the background and not at the end of the execution.
+
+
+## Metadata
