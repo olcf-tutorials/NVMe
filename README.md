@@ -267,4 +267,4 @@ Then, you will have something like that:
 Duration: 23.0020
 ```
 
-Then, NVMe, is 1.65 times faster than GPFS for a single node. This is an itneresting example to illustrate that NVMe can benefit you even in small scale, depending on your application.
+Then, NVMe, is 1.65 times faster than GPFS for a single node. This is an interesting example to illustrate that NVMe can benefit you even in small scale, depending on your application.
